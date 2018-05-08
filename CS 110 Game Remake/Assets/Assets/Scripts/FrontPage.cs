@@ -6,9 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class FrontPage : MonoBehaviour {
     Button[] buttons;
-    bool isSoundPlaying = true;
-    public GameObject gameController;
-    AudioSource music;
+    //bool isSoundPlaying = true;
+    //public GameObject gameController;
+    //AudioSource music;
 	// Use this for initialization
 	void Start () {
         buttons = GetComponentsInChildren<Button>();
@@ -17,7 +17,7 @@ public class FrontPage : MonoBehaviour {
             Text buttonTexts = buttons[i].GetComponentInChildren<Text>();
             buttonTexts.text = "";
         }
-        music = gameController.GetComponent<AudioSource>();
+        //music = gameController.GetComponent<AudioSource>();
 	}
 
     public void PlayGame()
@@ -25,23 +25,23 @@ public class FrontPage : MonoBehaviour {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    public void QuitGame()
-    {
-        Debug.Log("App Quit");
-        Application.Quit();
-    }
+    //public void QuitGame()
+    //{
+    //    Debug.Log("App Quit");
+    //    Application.Quit();
+    //}
 
-    public void ToggleSound()
-    {
-        if (isSoundPlaying)
-        {
-            music.Pause();
-            isSoundPlaying = false;
-        }
-        else
-        {
-            music.UnPause();
-            isSoundPlaying = true;
-        }
-    }
+    //public void ToggleSound()
+    //{
+    //    if (isSoundPlaying)
+    //    {
+    //        music.Pause();
+    //        isSoundPlaying = false;
+    //    }
+    //    else
+    //    {
+    //        music.UnPause();
+    //        isSoundPlaying = true;
+    //    }
+    //}
 }

@@ -12,20 +12,19 @@ public class PlaceTower : MonoBehaviour {
 
     private Level01 level01script;
     //private List<GameObject> tiles;
-    private GameObject pathsObj;
-    private Transform[] paths;
+    //private GameObject pathsObj;
+    //private Transform[] paths;
     private Ray ray;
     private RaycastHit2D hit;
-    private Camera mainCamera;
 
 	// Use this for initialization
 	void Start () {
         level01script = level01Manager.GetComponent<Level01>();
-        pathsObj = GameObject.Find("Paths");
-        paths = pathsObj.GetComponentsInChildren<Transform>();
-        print(paths);
-        mainCamera = Transform.FindObjectOfType<Camera>();
-        print(mainCamera.transform.position);
+        //pathsObj = GameObject.Find("Paths");
+        //paths = pathsObj.GetComponentsInChildren<Transform>();
+        //print(paths);
+        //mainCamera = Transform.FindObjectOfType<Camera>();
+        //print(mainCamera.transform.position);
         //for(int i = 0; i < paths.Length; i++)
         //{
         //    print(paths[i]);
@@ -35,12 +34,11 @@ public class PlaceTower : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //canPlaceTower();
+
 	}
 
     private void OnMouseDrag()
     {
-        //isDragged = true;
         GetComponent<SpriteRenderer>().sprite = towerWithRange;
         Vector3 mousePosInWorldSpace = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(mousePosInWorldSpace.x, mousePosInWorldSpace.y, 0);
@@ -53,9 +51,10 @@ public class PlaceTower : MonoBehaviour {
         transform.position = new Vector3(1.5f, -4.75f, 0f);
         if (CanPlaceTower() && CanPurchaseTower())
         {
-            Instantiate(workingTower, new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0), Quaternion.identity);
-            level01script.money -= 100;
+            GameObject tempTower = Instantiate(workingTower, new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, 0), Quaternion.identity);
+            level01script.money -= price;
             level01script.moneyText.text = level01script.money.ToString();
+            level01script.GetTowerList().Add(tempTower);
         }
     }
 
@@ -90,7 +89,6 @@ public class PlaceTower : MonoBehaviour {
         }
         if (hit.collider != null)
         {
-            print(hit.collider.name);
             if(hit.collider.gameObject.tag == "Path")
             {
                 return false;

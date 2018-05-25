@@ -51,7 +51,6 @@ public class MoveToWaypoint : MonoBehaviour {
             }
             else
             {
-                print("works");
                 level01script.lives--;
                 level01script.livesText.text = level01script.lives.ToString();
                 level01script.removeFromEnemyList(gameObject);
@@ -76,11 +75,5 @@ public class MoveToWaypoint : MonoBehaviour {
             animState = 1;
             spriteRenderer.sprite = slime1;
         }
-        //else if(animState == 3)
-        //{
-        //    animState = 1;
-        //    spriteRenderer.sprite = slime1;
-        //}
-        //print(animState);
     }
 }

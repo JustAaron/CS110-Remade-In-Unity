@@ -32,12 +32,12 @@ public class ShootAtEnemy : MonoBehaviour {
     private GameObject isEnemyInRange()
     {
         //float distance;
-        for(int i = 0; i < level01script.enemyList.Count; i++)
+        for(int i = 0; i < level01script.GetEnemyList().Count; i++)
         {
-            float distance = (transform.position - level01script.enemyList[i].transform.position).magnitude;
+            float distance = (transform.position - level01script.GetEnemyList()[i].transform.position).magnitude;
             if (distance <= range)
             {
-                return level01script.enemyList[i];
+                return level01script.GetEnemyList()[i];
             }
         }
         return null;
@@ -46,7 +46,6 @@ public class ShootAtEnemy : MonoBehaviour {
     private void dealDamageTo(GameObject enemy)
     {
         enemy.GetComponent<Health>().health -= damage;
-        print(enemy);
     }
 
     private void shoot()

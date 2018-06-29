@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ShootAtEnemy : MonoBehaviour {
-    public float range = 5f;
-    public float damage = 100f;
+    public float range;
+    public float damage;
     public float shotsPerSecond;
 
-    private float timeSinceLastFire = 0f;
+    private float timeSinceLastFire;
     private float fireRate;
 
     private Level01 level01script;
@@ -16,6 +16,7 @@ public class ShootAtEnemy : MonoBehaviour {
 	void Start () {
         level01script = GameObject.Find("Level01Screen").GetComponent<Level01>();
         fireRate = 1 / shotsPerSecond;
+        timeSinceLastFire = 0;
 	}
 	
 	// Update is called once per frame
@@ -45,7 +46,14 @@ public class ShootAtEnemy : MonoBehaviour {
 
     private void dealDamageTo(GameObject enemy)
     {
-        enemy.GetComponent<Health>().health -= damage;
+        Health enemyHealth = enemy.GetComponent<Health>();
+        enemyHealth.health -= damage;
+        if(enemyHealth.health <= 0)
+        {
+            level01script.money += enemyHealth.value;
+            level01script.moneyText.text = level01script.money.ToString();
+            enemyHealth.DestroySelf();
+        }
     }
 
     private void shoot()

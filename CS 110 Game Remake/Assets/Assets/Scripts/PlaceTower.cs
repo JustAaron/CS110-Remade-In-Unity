@@ -14,7 +14,7 @@ public class PlaceTower : MonoBehaviour {
     //private List<GameObject> tiles;
     //private GameObject pathsObj;
     //private Transform[] paths;
-    private Ray ray;
+    //private Ray ray;
     private RaycastHit2D hit;
 
 	// Use this for initialization

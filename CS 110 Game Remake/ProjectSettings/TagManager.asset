@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - Path
+  - MainCanvas
+  - Waypoints
+  - Level01
+  - HealthBarOriginal
   layers:
   - Default
   - TransparentFX

@@ -10,13 +10,15 @@ public class Level01 : MonoBehaviour {
     [HideInInspector]
     public int lives, money, wave;
     public GameObject winPage, endPage;
-    private Ray ray;
-    private RaycastHit hit;
+    //private Ray ray;
+    //private RaycastHit hit;
     public Text livesText, moneyText, waveText;
     public GameObject enemy;
     private List<GameObject> enemyList, towerList;
-    private bool startWaveEvent, waveStarted;
-    private float waveTimer;
+    //private bool startWaveEvent;
+    private bool waveStarted;
+    private int count;
+    //private float waveTimer;
 
 	// Use this for initialization
 	void Start () {
@@ -28,45 +30,18 @@ public class Level01 : MonoBehaviour {
         livesText = transform.Find("Texts/LivesText").gameObject.GetComponent<Text>();
         moneyText = transform.Find("Texts/MoneyText").gameObject.GetComponent<Text>();
         waveText = transform.Find("Texts/WaveText").gameObject.GetComponent<Text>();
-        startWaveEvent = false;
-        waveTimer = 0;
+        //startWaveEvent = false;
+        //waveTimer = 0;
         waveStarted = false;
         lives = livesOrig;
         money = moneyOrig;
         wave = waveOrig;
         enemyList = new List<GameObject>();
         towerList = new List<GameObject>();
-    }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (startWaveEvent && !waveStarted)
-        {
-            waveStarted = true;
-            wave++;
-            waveText.text = wave.ToString();
-            waveTimer += Time.deltaTime;
-            StartCoroutine(StartWave(wave * 3 + 5));
-            if (wave == finalWave + 1)
-            {
-                ResetGame();
-                StopAllCoroutines();
-                winPage.SetActive(true);
-                gameObject.SetActive(false);
-            }
-        }
-        if(lives <= 0)
-        {
-            ResetGame();
-            StopAllCoroutines();
-            endPage.SetActive(true);
-            gameObject.SetActive(false);
-        }
-        startWaveEvent = false;
+        count = 0;
     }
 
-    public void SpawnEnemy()
+    private void SpawnEnemy()
     {
         GameObject tempEnemy = Instantiate(enemy, new Vector3(-6.25f, 5f, 0f), Quaternion.identity);
         enemyList.Add(tempEnemy);
@@ -77,29 +52,46 @@ public class Level01 : MonoBehaviour {
         enemyList.Remove(removeEnemy);
     }
 
-    private IEnumerator StartWave(int numberOfEnemies)
+    public IEnumerator StartWave(int numberOfEnemies)
     {
         for (int i = 0; i < numberOfEnemies; i++)
         {
             SpawnEnemy();
-            if (i == numberOfEnemies - 1)
-            {
-                waveStarted = false;
-            }
+            count++;
+            //print(count);
             yield return new WaitForSeconds(spawnWait);
-
         }
+        //print("wave ended");
+        //print("coroutine ended");
+        waveStarted = false;
     }
 
     public void StartWaveButtonClicked()
     {
-        startWaveEvent = true;
+        //print("button clicked");
+        if (!waveStarted)
+        {
+            //print("wave started");
+            //startWaveEvent = false;
+            waveStarted = true;
+            wave++;
+            waveText.text = wave.ToString();
+            //waveTimer += Time.deltaTime;
+            StartCoroutine(StartWave(wave * 3 + 5));
+            if (wave == finalWave + 1)
+            {
+                ResetGame();
+                StopAllCoroutines();
+                winPage.SetActive(true);
+                gameObject.SetActive(false);
+            }
+        }
     }
 
-    private void ResetGame()
+    public void ResetGame()
     {
-        startWaveEvent = false;
-        waveTimer = 0;
+        //startWaveEvent = false;
+        //waveTimer = 0;
         waveStarted = false;
         lives = livesOrig;
         money = moneyOrig;
@@ -109,6 +101,7 @@ public class Level01 : MonoBehaviour {
         waveText.text = wave.ToString();
         for (int i = 0; i < enemyList.Count; i++)
         {
+            Destroy(enemyList[i].GetComponent<Health>().GetHealthBar());
             Destroy(enemyList[i].gameObject);
         }
         enemyList.Clear();

@@ -10,24 +10,38 @@ public class Health : MonoBehaviour {
     public int value;
 
     private Level01 level01script;
+    private Canvas mainCanvas;
     private Image healthBar;
+    private Image healthBarCopy;
+    private Vector3 SPAWN;
 
     // Use this for initialization
     void Start () {
         health = maxHealth;
-        level01script = GameObject.Find("Level01Screen").GetComponent<Level01>();
-        healthBar = GetComponentInChildren<Image>();
+        level01script = GameObject.FindGameObjectWithTag("Level01").GetComponent<Level01>();
+        mainCanvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<Canvas>();
+        healthBar = GameObject.FindGameObjectWithTag("HealthBarOriginal").GetComponent<Image>();
+        SPAWN = gameObject.transform.position + new Vector3(0f, 0.4f, 0f);
+        healthBarCopy = Instantiate(healthBar, mainCanvas.transform);
+        healthBarCopy.transform.position = SPAWN;
+        healthBarCopy.tag = "Untagged";
     }
 	
 	// Update is called once per frame
 	void Update () {
-		if(health <= 0)
-        {
-            level01script.money += value;
-            level01script.moneyText.text = level01script.money.ToString();
-            level01script.removeFromEnemyList(gameObject);
-            Destroy(gameObject);
-        }
-        healthBar.fillAmount = (health / maxHealth);
+        healthBarCopy.transform.position = gameObject.transform.position + new Vector3(0f, 0.4f, 0f);
+        healthBarCopy.fillAmount = (health / maxHealth);
 	}
+
+    public Image GetHealthBar()
+    {
+        return healthBarCopy;
+    }
+
+    public void DestroySelf()
+    {
+        level01script.removeFromEnemyList(gameObject);
+        Destroy(healthBarCopy.gameObject);
+        Destroy(gameObject);
+    }
 }

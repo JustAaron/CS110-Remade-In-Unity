@@ -4,30 +4,27 @@ using UnityEngine;
 
 public class MoveToWaypoint : MonoBehaviour {
     private Level01 level01script;
-    public float speed = 10f;
+    public float speed;
     public Sprite slime1;
     public Sprite slime2;
-    public Sprite slime3;
+    //public Sprite slime3;
 
-    private int waypointTarget = 0;
+    private int waypointTarget;
     private Transform waypoints;
     private Rigidbody2D rb;
-    private int animState = 1;
+    private int animState;
     private SpriteRenderer spriteRenderer;
 
 	// Use this for initialization
 	void Start () {
-        waypoints = GameObject.Find("Waypoints").transform;
-        level01script = GameObject.Find("Level01Screen").GetComponent<Level01>();
+        waypoints = GameObject.FindGameObjectWithTag("Waypoints").transform;
+        level01script = GameObject.FindGameObjectWithTag("Level01").GetComponent<Level01>();
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         InvokeRepeating("changeAnim", 0.5f, .25f);
+        waypointTarget = 0;
+        animState = 1;
     }
-	
-	// Update is called once per frame
-	void Update () {
-
-	}
 
     private void FixedUpdate()
     {
@@ -53,8 +50,14 @@ public class MoveToWaypoint : MonoBehaviour {
             {
                 level01script.lives--;
                 level01script.livesText.text = level01script.lives.ToString();
-                level01script.removeFromEnemyList(gameObject);
-                Destroy(gameObject);
+                gameObject.GetComponent<Health>().DestroySelf();
+                if (level01script.lives <= 0)
+                {
+                    level01script.ResetGame();
+                    level01script.StopAllCoroutines();
+                    level01script.endPage.SetActive(true);
+                    level01script.gameObject.SetActive(false);
+                }
             }
         }
         else

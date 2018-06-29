@@ -5,15 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour {
     AudioSource music;
-    bool isSoundPlaying = true;
+    bool isSoundPlaying;
 
 	// Use this for initialization
 	void Awake () {
         music = GetComponent<AudioSource>();
-        if(SceneManager.GetActiveScene().buildIndex == 0)
-        {
-            DontDestroyOnLoad(transform.gameObject);
-        }
+        Screen.SetResolution(700, 650, false);
+        DontDestroyOnLoad(transform.gameObject);
+        isSoundPlaying = true;
 	}
     private void Update()
     {
@@ -21,11 +20,6 @@ public class GameController : MonoBehaviour {
         {
             QuitGame();
         }
-    }
-
-    void StartWave()
-    {
-
     }
 
     public void ToggleSound()
